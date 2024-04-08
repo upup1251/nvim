@@ -33,11 +33,11 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
     nested = true,
     --format when the buffer  save
 })
-vim.api.nvim_create_autocmd("BufWritePre", {
-    group = group,
-    buffer = bufnr,
-    callback = function() vim.lsp.buf.format { bufnr = bufnr, async = true } end
-})
+-- vim.api.nvim_create_autocmd("BufWritePre", {
+--     group = group,
+--     buffer = bufnr,
+--     callback = function() vim.lsp.buf.format { bufnr = bufnr, async = true } end
+-- })
 
 vim.cmd [[
 sign define DiagnosticSignError text=  linehl= texthl=DiagnosticSignError numhl=

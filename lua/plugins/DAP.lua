@@ -1,13 +1,12 @@
 return {
     { --debugger程序
         'mfussenegger/nvim-dap',
+        keys = {
+            "<leader>b",
+        },
         dependencies = {
             'rcarriga/nvim-dap-ui',
             "theHamsta/nvim-dap-virtual-text",
-        },
-        lazy = true,
-        keys = {
-            "<leader>b",
         },
         config = function()
             -- here is  the  ui icon
@@ -29,15 +28,15 @@ return {
                 numhl =
                 'DapStopped'
             })
-            vim.keymap.set({ "i", "n", "v" }, "<leader>b", "<cmd>lua require'dap'.toggle_breakpoint()<CR>",
+            vim.keymap.set({ "n" }, "<leader>b", "<cmd>lua require'dap'.toggle_breakpoint()<CR>",
                 { silent = true, noremap = true, buffer = bufnr })
-            vim.keymap.set({ "i", "n", "v" }, "<leader>c", "<cmd>lua require'dap'.continue()<CR>",
+            vim.keymap.set({ "n" }, "<leader>c", "<cmd>lua require'dap'.continue()<CR>",
                 { silent = true, noremap = true, buffer = bufnr })
-            vim.keymap.set({ "i", "n", "v" }, "<leader>n", "<cmd>lua require'dap'.step_over()<CR>",
+            vim.keymap.set({ "n" }, "<leader>n", "<cmd>lua require'dap'.step_over()<CR>",
                 { silent = true, noremap = true, buffer = bufnr })
-            vim.keymap.set({ "i", "n", "v" }, "<leader>i", "<cmd>lua require'dap'.step_into()<CR>",
+            vim.keymap.set({ "n" }, "<leader>i", "<cmd>lua require'dap'.step_into()<CR>",
                 { silent = true, noremap = true, buffer = bufnr })
-            vim.keymap.set({ "i", "n", "v" }, "<leader>q",
+            vim.keymap.set({ "n" }, "<leader>q",
                 "<cmd>lua require'dap'.disconnect()<CR><cmd>lua require'dap'.close()<CR><cmd>lua require('dapui').close()<cr>",
                 { silent = true, noremap = true, buffer = bufnr })
             --
@@ -104,7 +103,7 @@ return {
     },
     {
         "theHamsta/nvim-dap-virtual-text",
-        opts = {}
+        lazy = true
     },
     { --dap的gui图形界面
         'rcarriga/nvim-dap-ui',

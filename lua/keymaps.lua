@@ -7,10 +7,10 @@ keymap.set('i', 'jk', "<Esc>")
 keymap.set('n', '<C-n>', ":bnext<cr>")
 keymap.set('n', '<C-m>', ':tabnext<cr>')
 --size:
-keymap.set('n', 'up', ':resize +1<cr>')
-keymap.set('n', 'down', ':resize -1<cr>')
-keymap.set('n', 'righe', ':vertical resize +1<cr>')
-keymap.set('n', 'left', ':vertical resize -1<cr>')
+keymap.set('n', '<Up>', ':resize +1<cr>')
+keymap.set('n', '<Down>', ':resize -1<cr>')
+keymap.set('n', '<Right>', ':vertical resize +1<cr>')
+keymap.set('n', '<Left>', ':vertical resize -1<cr>')
 
 --增加窗口
 keymap.set('n', '<leader>sv', "<C_w>v")

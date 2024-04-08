@@ -93,15 +93,8 @@ return {
         end
     },
 
-    { --the markdown preview tool
-        "iamcco/markdown-preview.nvim",
-        cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-        build = "cd app && yarn install",
-        init = function()
-            vim.g.mkdp_filetypes = { "markdown" }
-        end,
-        ft = { "markdown" },
-    },
+
+
 
     { --这是自动保存、手动加载sessions的插件
         "folke/persistence.nvim",
@@ -145,7 +138,21 @@ return {
         -- `gc[count]{motion}` - (Op-pending) Toggles the region using linewise comment
         -- `gb[count]{motion}` - (Op-pending) Toggles the region using blockwise comment
     },
+    -- install without yarn or npm
 
+    {
+        "iamcco/markdown-preview.nvim",
+        ft = "markdown",
+        build = function()
+            vim.fn["mkdp#util#install"]()
+        end,
+        config = function()
+            vim.g.mkdp_browser = "min"
+            vim.g.mkdp_open_ip = "127.0.0.1"
+            vim.g.mkdp_port = 8080
+        end,
+        cmd = { "MarkdownPreview", "MarkdownPreviewStop", "MarkdownPreviewToggle" },
+    },
     {
         "dstein64/vim-startuptime",
         cmd = "StartupTime",
@@ -153,4 +160,5 @@ return {
             vim.g.startuptime_tries = 10
         end,
     },
+
 }
