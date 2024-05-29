@@ -9,15 +9,6 @@ return {
         lazy = true,
     },
 
-    { --snippet引擎，用于展示补全信息
-        "L3MON4D3/LuaSnip",
-        lazy = true,
-        -- follow latest release.
-        version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
-        -- install jsregexp (optional!).
-        build = "make install_jsregexp"
-    },
-
     --nvim-cmp的本体
     {
         "hrsh7th/nvim-cmp",
@@ -28,6 +19,8 @@ return {
             { "L3MON4D3/LuaSnip" },
             { 'onsails/lspkind-nvim' },
             { "rafamadriz/friendly-snippets" },
+            --luasnip和cmp之间的桥梁，没有不行呜呜呜我现在知道了
+            {'saadparwaiz1/cmp_luasnip'},
 
             { 'hrsh7th/cmp-nvim-lsp' },
             { 'hrsh7th/cmp-buffer' },
@@ -47,9 +40,21 @@ return {
                 sources = cmp.config.sources({
                     { name = 'nvim_lsp' },
                     { name = 'luasnip' },
+                },{
                     { name = 'buffer' },
                     { name = 'path' },
                 }),
+                formatting = {
+                   format = require('lspkind').cmp_format({
+                     with_text = true, -- do not show text alongside icons
+                     maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+                     before = function (entry, vim_item)
+                       -- Source 显示提示来源
+                       vim_item.menu = "["..string.upper(entry.source.name).."]"
+                       return vim_item
+                     end
+                   })
+                 },
                 mapping = {
                     ['<TAB>'] = cmp.mapping.select_next_item(),
                     ['<S-TAB>'] = cmp.mapping.select_prev_item(),
@@ -62,4 +67,18 @@ return {
             })
         end
     },
+
+    { --snippet引擎，用于展示补全信息
+            "L3MON4D3/LuaSnip",
+            lazy = true,
+            -- follow latest release.
+            version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
+            -- install jsregexp (optional!).
+            build = "make install_jsregexp",
+            config = function ()
+                require('myluasnip')
+               -- 加载 snippets
+                require('luasnip.loaders.from_vscode').lazy_load()
+            end
+        }
 }

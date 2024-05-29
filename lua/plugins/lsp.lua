@@ -21,10 +21,9 @@ return {
     {
         "neovim/nvim-lspconfig",
         config = function()
-            require 'lspconfig'.pyright.setup {}  --python
+            --require 'lspconfig'.pyright.setup {}  --python
             require 'lspconfig'.clangd.setup {}   --C++
-            require 'lspconfig'.marksman.setup {} --C++
-            require 'lspconfig'.lua_ls.setup {}   --lua
+            require 'lspconfig'.marksman.setup {} --markdown
             require 'lspconfig'.jdtls.setup {}    --java
             require 'lspconfig'.sqls.setup {}     --sql
             require 'lspconfig'.lua_ls.setup {

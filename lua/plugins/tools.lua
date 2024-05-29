@@ -46,6 +46,27 @@ return {
         end,
     },
 
+    {
+      "folke/flash.nvim",
+      event = "VeryLazy",
+      ---@type Flash.Config
+      opts = {
+          modes = {
+              --关闭f、t的增强
+              char = {enabled = false}
+          }
+
+      },
+      -- stylua: ignore
+      keys = {
+        { "/", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+        --{ "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+        { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
+        { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+        { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+      },
+    },
+
     { -- file find tool
         'nvim-telescope/telescope.nvim',
         lazy = true,
@@ -59,6 +80,7 @@ return {
                 vim.keymap.set('n', '<leader>fg', require('telescope.builtin').live_grep, {}),
                 vim.keymap.set('n', '<leader>fb', require('telescope.builtin').buffers, {}),
                 vim.keymap.set('n', '<leader>fh', require('telescope.builtin').help_tags, {}),
+                vim.keymap.set('n', '<leader>fk', require('telescope.builtin').keymaps, {}),
 
                 defaults = {
                     mappings = {
@@ -141,24 +163,40 @@ return {
     -- install without yarn or npm
 
     {
-        "iamcco/markdown-preview.nvim",
-        ft = "markdown",
-        build = function()
-            vim.fn["mkdp#util#install"]()
-        end,
-        config = function()
-            vim.g.mkdp_browser = "min"
-            vim.g.mkdp_open_ip = "127.0.0.1"
-            vim.g.mkdp_port = 8080
-        end,
-        cmd = { "MarkdownPreview", "MarkdownPreviewStop", "MarkdownPreviewToggle" },
+      "iamcco/markdown-preview.nvim",
+      cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+      build = "cd app && yarn install",
+      init = function()
+        vim.g.mkdp_filetypes = { "markdown" }
+      end,
+      ft = { "markdown" },
     },
+
     {
-        "dstein64/vim-startuptime",
-        cmd = "StartupTime",
-        config = function()
-            vim.g.startuptime_tries = 10
-        end,
+     "HakonHarnes/img-clip.nvim",
+     event = "VeryLazy",
+     opts = {
+       -- add options here
+       -- or leave it empty to use the default settings
+     },
+     keys = {
+       -- suggested keymap
+       { "<leader>p", "<cmd>PasteImage<cr>", desc = "Paste image from system clipboard" },
+     },
+    },
+
+    --  [markdown markmap]
+    --  https://github.com/Zeioth/markmap.nvim
+    {
+      "Zeioth/markmap.nvim",
+      build = "yarn global add markmap-cli",
+      cmd = { "MarkmapOpen", "MarkmapSave", "MarkmapWatch", "MarkmapWatchStop" },
+      opts = {
+        html_output = "/tmp/markmap.html", -- (default) Setting a empty string "" here means: [Current buffer path].html
+        hide_toolbar = false, -- (default)
+        grace_period = 3600000 -- (default) Stops markmap watch after 60 minutes. Set it to 0 to disable the grace_period.
+      },
+      config = function(_, opts) require("markmap").setup(opts) end
     },
 
 }

@@ -15,3 +15,7 @@ keymap.set('n', '<Left>', ':vertical resize -1<cr>')
 --增加窗口
 keymap.set('n', '<leader>sv', "<C_w>v")
 keymap.set('n', '<leader>sh', "<C_w>s")
+
+--切换“/”和“？”的前后搜索方向，把“/”留给flash
+vim.api.nvim_set_keymap('n', '/', '?', { noremap = true })
+vim.api.nvim_set_keymap('n', '?', '/', { noremap = true })

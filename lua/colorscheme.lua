@@ -1,3 +1,2 @@
 vim.cmd[[colorscheme tokyonight]]
 
-
