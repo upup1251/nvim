@@ -26,6 +26,10 @@ return {
             require 'lspconfig'.marksman.setup {} --markdown
             require 'lspconfig'.jdtls.setup {}    --java
             require 'lspconfig'.sqls.setup {}     --sql
+            require 'lspconfig'.pyright.setup{}
+            require 'lspconfig'.html.setup{}
+            require 'lspconfig'.cssls.setup{}
+            require 'lspconfig'.tsserver.setup{}
             require 'lspconfig'.lua_ls.setup {
                 vim.keymap.set('n', 'gf', function()
                     vim.lsp.buf.format { async = true }

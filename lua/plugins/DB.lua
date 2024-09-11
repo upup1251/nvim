@@ -1,7 +1,10 @@
+-- 数据库
 return {
+
     {
         'tpope/vim-dadbod'
     },
+
     {
         'kristijanhusak/vim-dadbod-ui',
         dependencies = {
@@ -29,4 +32,7 @@ return {
             vim.keymap.set({ "n" }, "gt", "<cmd>DBUIToggle<CR>")
         end
     }
+    -- url for mysql
+    -- mysql://<username>:<password>@<host>:<port>/<db_name>
+
 }

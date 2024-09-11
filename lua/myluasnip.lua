@@ -58,19 +58,6 @@ end
 
 -- 定义 Markdown 代码片段
 ls.add_snippets("markdown", {
-  -- 标题 1
-  s("h1", {
-    t("# "), i(1, "header")
-  }),
-  -- 标题 2
-  s("h2", {
-    t("## "), i(1, "header")
-  }),
-  -- 标题 3
-  s("h3", {
-    t("### "), i(1, "header")
-  }),
-  -- 链接
   s("link", {
     t("["), i(1, "link text"), t("]("), i(2, "link"), t(")")
   }),

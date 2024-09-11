@@ -39,6 +39,19 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 --     callback = function() vim.lsp.buf.format { bufnr = bufnr, async = true } end
 -- })
 
+-- 创建一个名为 `HtmlPreview` 的自定义命令，用于执行Bracey命令时自动打开windows下的edge进行预览
+vim.api.nvim_create_user_command(
+    'HtmlPreview',  -- 命令名称
+    function()
+        vim.cmd('Bracey')
+        local cmd = 'powershell.exe Start-Process "msedge.exe" "http://localhost:9999"'
+        vim.fn.system(cmd)
+    end,
+    {}  -- 额外的选项（可选）
+)
+
+
+
 vim.cmd [[
 sign define DiagnosticSignError text=  linehl= texthl=DiagnosticSignError numhl=
 sign define DiagnosticSignWarn text= linehl= texthl=DiagnosticSignWarn numhl=

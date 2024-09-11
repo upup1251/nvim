@@ -71,7 +71,7 @@ return {
         'nvim-telescope/telescope.nvim',
         lazy = true,
         keys = {
-            "<leader>ff", "<leader>fg", "<leader>fb"
+            "<leader>ff", "<leader>fg", "<leader>fb","<leader>fk"
         },
         dependencies = { 'nvim-lua/plenary.nvim' },
         config = function()
@@ -187,6 +187,7 @@ return {
 
     --  [markdown markmap]
     --  https://github.com/Zeioth/markmap.nvim
+    --  先安装markmap-cli工具
     {
       "Zeioth/markmap.nvim",
       build = "yarn global add markmap-cli",
