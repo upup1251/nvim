@@ -1,8 +1,7 @@
 -- 数据库
 return {
-
     {
-        'tpope/vim-dadbod'
+      'tpope/vim-dadbod'
     },
 
     {
@@ -34,5 +33,4 @@ return {
     }
     -- url for mysql
     -- mysql://<username>:<password>@<host>:<port>/<db_name>
-
 }

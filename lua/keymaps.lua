@@ -1,15 +1,22 @@
-local keymap = vim.keymap
 --设置leader键为space
 vim.g.mapleader = " "
-keymap.set('i', 'jk', "<Esc>")
+-- keymap.set('i', 'jk', "<Esc>")
+--需要适应cap_lock进行切换
 
---size:
-keymap.set('n', '<Up>', ':resize +1<cr>')
-keymap.set('n', '<Down>', ':resize -1<cr>')
-keymap.set('n', '<Right>', ':vertical resize +1<cr>')
-keymap.set('n', '<Left>', ':vertical resize -1<cr>')
+-- Better window navigation
+vim.keymap.set('n', '<C-h>', '<C-w>h', opts)
+vim.keymap.set('n', '<C-j>', '<C-w>j', opts)
+vim.keymap.set('n', '<C-k>', '<C-w>k', opts)
+vim.keymap.set('n', '<C-l>', '<C-w>l', opts)
+
+-- Resize with arrows
+vim.keymap.set('n', '<C-Up>', ':resize -2<CR>', opts)
+vim.keymap.set('n', '<C-Down>', ':resize +2<CR>', opts)
+vim.keymap.set('n', '<C-Left>', ':vertical resize -2<CR>', opts)
+vim.keymap.set('n', '<C-Right>', ':vertical resize +2<CR>', opts)
 
 
---切换“/”和“？”的前后搜索方向，把“/”留给flash
-vim.api.nvim_set_keymap('n', '/', '?', { noremap = true })
-vim.api.nvim_set_keymap('n', '?', '/', { noremap = true })
+-- Hint: start visual mode with the same area as the previous area and the same mode
+vim.keymap.set('v', '<', '<gv', opts)
+vim.keymap.set('v', '>', '>gv', opts)
+

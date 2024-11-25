@@ -1,20 +1,19 @@
 return {
     {
         'turbio/bracey.vim',
+        ft = { "html" },
         config = function()
-            vim.g.bracey_server_port = 9999
-            -- 设置固定port，以通过init.lua中设置手动打开windows中的edge打开网页
-            -- local cmd = 'powershell.exe Start-Process "msedge.exe" "http://localhost:9999"'
-            -- vim.fn.system(cmd)
         end
-    },
+        -- question:bracey error: <urlopen error [Errno 111] Connection refused>
+        -- answer:go to the folder where bracey is installed with your plugin manager then run command:`npm install --prefix server`
 
+    },
     {
         'norcalli/nvim-colorizer.lua',
+        ft = { "html", "css" },
         config = function()
             require 'colorizer'.setup()
         end
-        
-    }
 
+    }
 }

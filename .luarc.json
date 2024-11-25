@@ -1,9 +1,11 @@
 {
     "diagnostics.globals": [
         "vim",
-        "bufnr"
+        "bufnr",
+        "leave_snippet"
     ],
     "diagnostics.disable": [
-        "undefined-global"
+        "undefined-global",
+        "lowercase-global"
     ]
 }

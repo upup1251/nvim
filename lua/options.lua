@@ -1,3 +1,5 @@
+-- ~/.config/nvim/lua/options.lua
+vim.opt.termguicolors = true
 --tab 
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
@@ -17,6 +19,13 @@ vim.o.backup = false
 vim.o.writebackup = false
 vim.o.swapfile = false
 
+-- 仅显示一个全局状态栏
+vim.o.laststatus = 3
+
+vim.opt.splitbelow = true -- open new vertical split bottom
+vim.opt.splitright = true -- open new horizontal splits right
+
+
 vim.wo.signcolumn = "yes"  --显示左侧图标指示列
 vim.opt.clipboard = "unnamedplus" --use system clipboard
 vim.opt.mouse = 'a' --allow the mouse work
@@ -33,6 +42,10 @@ vim.opt.hlsearch = true --set the hight light when search
 vim.o.smartcase = true
 --the undo forever
 vim.opt.undofile = true
-vim.opt.undodir = '/home/upupup/.config/nvim/undodir'
+vim.opt.undodir = '~/.local/share/nvim/undodir'
 vim.opt.undolevels=1000     --设置保存的撤销历史记录的最大步数
 vim.opt.undoreload=1000     --在 Neovim 重启时重新加载撤销历史记录
+
+
+-- auto change dir when buffer changed  
+vim.opt.autochdir = true
