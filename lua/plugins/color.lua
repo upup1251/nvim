@@ -1,5 +1,8 @@
 -- color.lua
 return {
+    -- NOTE: 交互ui
+    -- ------------
+
     { --this is a ui,
         "folke/noice.nvim",
         event = "VeryLazy",
@@ -16,86 +19,21 @@ return {
         },
     },
 
-    { --这是一个语法高亮插件
-        'nvim-treesitter/nvim-treesitter',
-        -- we should add the paser per language
-        -- to do it , we can use :TSInstall language_name
-        -- to know what language paser we have,we can use :TSInstallInfo
-        lazy = true,
-        config = function()
-            require 'nvim-treesitter.configs'.setup {
-                ensure_installed = { "markdown", "markdown_inline", "html" },
-                highlight = {
-                    enable = true,
-                    additional_vim_regex_highlighting = false,
-                },
-                indent = { enable = true },
-            }
-        end
-    },
+    -- NOTE: 括号
+    -- ---------
 
     { --符号自动成双对
         'windwp/nvim-autopairs',
         event = "InsertEnter",
         opts = {} -- this is equalent to setup({}) function
     },
-
     { --彩虹括号
         -- no many setting
         'HiPhish/rainbow-delimiters.nvim',
     },
 
-    { --垂直线插件
-        -- require the treesitter
-        -- The scope is not the current indentation level!
-        -- Instead, it is the indentation level where variables or functions are accessible
-        "lukas-reineke/indent-blankline.nvim",
-        event = "LspAttach",
-        config = function()
-            -- set mutiple indent colors
-            local highlight = {
-                "RainbowRed",
-                "RainbowYellow",
-                "RainbowBlue",
-                "RainbowOrange",
-                "RainbowGreen",
-                "RainbowViolet",
-                "RainbowCyan",
-            }
-            local hooks = require "ibl.hooks"
-            hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
-                vim.api.nvim_set_hl(0, "RainbowRed", { fg = "#E06C75" })
-                vim.api.nvim_set_hl(0, "RainbowYellow", { fg = "#E5C07B" })
-                vim.api.nvim_set_hl(0, "RainbowBlue", { fg = "#61AFEF" })
-                vim.api.nvim_set_hl(0, "RainbowOrange", { fg = "#D19A66" })
-                vim.api.nvim_set_hl(0, "RainbowGreen", { fg = "#98C379" })
-                vim.api.nvim_set_hl(0, "RainbowViolet", { fg = "#C678DD" })
-                vim.api.nvim_set_hl(0, "RainbowCyan", { fg = "#56B6C2" })
-            end)
-            -- 与rainbow-delimiters集成
-            vim.g.rainbow_delimiters = { highlight = highlight }
-            -- start the plugin
-            require("ibl").setup {
-                scope = { highlight = highlight },
-                exclude = {
-                    filetypes = {
-                        "help",
-                        "alpha",
-                        "dashboard",
-                        "neo-tree",
-                        "Trouble",
-                        "trouble",
-                        "lazy",
-                        "mason",
-                        "notify",
-                        "toggleterm",
-                        "lazyterm",
-                    }
-                }
-            }
-            hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
-        end
-    },
+    -- NOTE: 垂直线
+    -- ------------
 
     { -- the scope of the place whre you are
         -- with the animation ,is vivid
@@ -142,6 +80,8 @@ return {
         end,
     },
 
+    -- NOTE: Buffers选项卡
+    -- ------------------
 
     { --上方的buffer栏
         'akinsho/bufferline.nvim',
@@ -157,7 +97,7 @@ return {
                 options = {
                     offsets = {
                         { --设置nvim-tree打开时buffer偏移
-                            filetype = "NvimTree",
+                            filetype = "NvimTree", "dbee-drawer",
                             text = "File Explorer",
                             text_align = "left",
                             separator = true,
@@ -178,6 +118,7 @@ return {
         end
     },
 
+    -- NOTE: Statusline状态栏
 
     { --下方的状态栏
         'nvim-lualine/lualine.nvim',
@@ -191,14 +132,15 @@ return {
                     -- theme = 'auto',
                     theme = {
                         normal = {
-                            a = { bg = "#007ACC", fg = "#ffffff" },
-                            b = { bg = "#007ACC", fg = "#ffffff" },
-                            c = { bg = "#007ACC", fg = "#ffffff" },
+                            -- nil 透明背景色
+                            a = { bg = nil, fg = nil, gui = 'bold' },
+                            b = { bg = nil, fg = nil },
+                            c = { bg = nil, fg = nil },
                         },
                         inactive = {
-                            a = { bg = "#a0a0a0", fg = "#ffffff" },
-                            b = { bg = "#a0a0a0", fg = "#ffffff" },
-                            c = { bg = "#a0a0a0", fg = "#ffffff" }
+                            a = { bg = nil, fg = nil },
+                            b = { bg = nil, fg = nil },
+                            c = { bg = nil, fg = nil }
                         },
                     },
                     component_separators = '',
@@ -211,34 +153,44 @@ return {
 
                 },
                 sections = {
-                    lualine_a = { { 'filetype', colored = false, icon_only = true },
-                        { 'filename' } },
+                    -- lualine_a = { { 'filetype', colored = false, icon_only = true },
+                    --     { 'filename' } },
+                    lualine_a = { '' },
                     lualine_b = {
                         {
                             'diagnostics',
                             diagnostics_color = {
-                                error = { fg = '#ffffff' },
-                                warn = { fg = '#ffffff' },
-                                info = { fg = '#ffffff' },
+                                -- error = { fg = '#ffffff' },
+                                -- warn = { fg = '#ffffff' },
+                                -- info = { fg = '#ffffff' },
                             },
                         }
                     },
                     lualine_c = { '' },
-                    lualine_x = {
-                        {
-                            'diff',
-                            colored = false,
-                            diff_color = {
-                                -- Same color values as the general color option can be used here.
-                                added    = { fg = '#ffffff' }, -- Changes the diff's added color
-                                modified = { fg = '#ffffff' }, -- Changes the diff's modified color
-                                removed  = { fg = '#ffffff' }, -- Changes the diff's removed color you
-                            },
-                        },
-                        'branch'
-                    },
-                    lualine_y = { 'progress' },
-                    lualine_z = { 'location' }
+                    -- lualine_x = {
+                    --     {
+                    --         'diff',
+                    --         colored = false,
+                    --         diff_color = {
+                    --             -- Same color values as the general color option can be used here.
+                    --             -- added    = { fg = '#ffffff' }, -- Changes the diff's added color
+                    --             -- modified = { fg = '#ffffff' }, -- Changes the diff's modified color
+                    --             -- removed  = { fg = '#ffffff' }, -- Changes the diff's removed color you
+                    --         },
+                    --     },
+                    --     'branch'
+                    -- },
+                    lualine_x = { '' },
+                    -- lualine_y = { 'progress' },
+                    lualine_y = { '' },
+                    -- lualine_z = { 'location' }
+                    lualine_z = {
+                        -- 输入的命令，通过noice
+                        {require("noice").api.status.command.get,
+                        cond = require("noice").api.status.command.has,
+                        color = { fg = "#ff9e64" },
+                        }
+                    }
                 },
                 inactive_sections = {
                     lualine_a = {},
@@ -256,6 +208,8 @@ return {
         end
     },
 
+    -- NOTE: 主界面
+    -- -----------
 
     { --启动界面
         'nvimdev/dashboard-nvim',
@@ -339,6 +293,8 @@ return {
             'nvim-telescope/telescope.nvim',
         } }
     },
+    -- NOTE: 主题部分:
+    -- ---------------
 
     { --主题
         "folke/tokyonight.nvim",
@@ -346,6 +302,7 @@ return {
         priority = 1000,
         opts = {},
         config = function()
+            -- 启用主题
             vim.cmd [[colorscheme tokyonight]]
         end
     },

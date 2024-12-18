@@ -14,6 +14,7 @@ vim.o.sidescrolloff = 4
 --文件被修改的时候，自动加载
 vim.o.autoread = true
 vim.bo.autoread = true
+
 --禁止创建备份文件
 vim.o.backup = false
 vim.o.writebackup = false
@@ -49,3 +50,5 @@ vim.opt.undoreload=1000     --在 Neovim 重启时重新加载撤销历史记录
 
 -- auto change dir when buffer changed  
 vim.opt.autochdir = true
+
+

@@ -19,6 +19,8 @@ local l = extras.l
 local postfix = require "luasnip.extras.postfix".postfix
 
 
+-- NOTE: 键位绑定
+
 -- 检查是否仍然和snip绑定
 -- 检查并展开代码片段，如果没有可展开的，则恢复默认行为
 -- vim.keymap.set({ "i" }, "<Enter>", function()
@@ -67,6 +69,7 @@ vim.keymap.set({ "i", "s" }, "<C-E>", function()
     end
 end, { silent = true })
 
+-- NOTE: 补全片段中所需的函数
 
 -- 定义生成表格函数
 local function generate_table(args)
@@ -110,6 +113,7 @@ local function get_comment_prefix()
     end
 end
 
+-- NOTE: 定义补全触发器
 
 -- 定义 Markdown 代码片段
 ls.add_snippets("markdown", {
@@ -137,55 +141,34 @@ ls.add_snippets("markdown", {
         t("$$"), i(1, "context"), t("$$")
     }),
 
-    s("todo", {
-        f(function()
-            local prefix = get_comment_prefix()
-            return prefix .. "TODO: "
-        end),
-        i(1, "todo"), -- 插入节点直接跟在 TODO: 后面
-        f(function()
-            local _, suffix = get_comment_prefix()
-            return suffix
-        end),
-        i(0) -- 跳出片段
-    }),
+})
 
-    -- 其他片段（如 FIXME、NOTE、HACK）也可以类似处理
-    s("fixme", {
-        f(function()
-            local prefix = get_comment_prefix()
-            return prefix .. "FIXME: "
+-- 为所有文件提供补全代码片段
+ls.add_snippets( "all", {
+    -- for todo
+    -- dependence: comments
+    s("todo", {
+        t(" TODO: "),
+        i(1, "todo"),
+        f(function ()
+            vim.cmd("normal! gcc")
         end),
+        i(0)
+    }),
+    s("fixme", {
+        t(" FIXME: "),
         i(1, "fixme"),
-        f(function()
-            local _, suffix = get_comment_prefix()
-            return suffix
+        f(function ()
+            vim.cmd("normal gcc")
         end),
         i(0)
     }),
 
     s("note", {
-        f(function()
-            local prefix = get_comment_prefix()
-            return prefix .. "NOTE: "
-        end),
+        t(" NOTE: "),
         i(1, "note"),
-        f(function()
-            local _, suffix = get_comment_prefix()
-            return suffix
-        end),
-        i(0)
-    }),
-
-    s("hack", {
-        f(function()
-            local prefix = get_comment_prefix()
-            return prefix .. "HACK: "
-        end),
-        i(1, "hack"),
-        f(function()
-            local _, suffix = get_comment_prefix()
-            return suffix
+        f(function ()
+            vim.cmd("normal gcc")
         end),
         i(0)
     }),

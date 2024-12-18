@@ -1,7 +1,10 @@
 --lsp语言协议管理中心
 --lsp.lua
 return {
-    --下载所需语言服务
+    -- NOTE: 从这里开始是配置LSP部分:
+    -- ------------------------------
+    --
+    -- 下载所需语言服务
     {
         "williamboman/mason.nvim",
         config = function()
@@ -38,15 +41,15 @@ return {
 
 
             --require 'lspconfig'.pyright.setup {}  --python
-            require 'lspconfig'.clangd.setup {} --C++
+            require 'lspconfig'.clangd.setup {}   --C++
             require 'lspconfig'.marksman.setup {} --markdown
-            require 'lspconfig'.asm_lsp.setup {} --assmbly
-            require 'lspconfig'.jsonls.setup {} --json
+            require 'lspconfig'.asm_lsp.setup {}  --assmbly
+            require 'lspconfig'.jsonls.setup {}   --json
 
             require 'lspconfig'.jdtls.setup {
                 filetypes = { "java", "jsp" },
                 autostart = true
-            }                           --java
+            }                                 --java
             require 'lspconfig'.sqls.setup {} --sql
             require 'lspconfig'.pyright.setup {
 
@@ -105,7 +108,7 @@ return {
             require('lspsaga').setup({
                 --上端的动态位置栏
                 symbol_in_winbar = {
-                    enable = true,
+                    enable = false,
                 },
                 vim.keymap.set('n', 'ga', '<cmd>Lspsaga code_action<cr>', {}),
                 -- 函数定义
@@ -114,7 +117,6 @@ return {
                 --类型定义
                 vim.keymap.set('n', 'gp', '<cmd>Lspsaga peek_type_definition<cr>', {}),
                 vim.keymap.set('n', 'gp', '<cmd>Lspsaga goto_type_definition<cr>', {}),
-
                 --悬浮终端
                 vim.keymap.set('n', 'gy', '<cmd>Lspsaga term_toggle<cr>', {}),
                 --大纲
@@ -136,14 +138,14 @@ return {
                     }
                 },
 
-
             })
         end,
         dependencies = {
             'nvim-treesitter/nvim-treesitter', -- optional,
-            'nvim-tree/nvim-web-devicons' -- optional
+            'nvim-tree/nvim-web-devicons'      -- optional
         }
     },
+
     {
         "mfussenegger/nvim-jdtls",
         ft = { "java" },
@@ -155,6 +157,9 @@ return {
             require('jdtls').start_or_attach(config)
         end
     },
+
+    -- NOTE: 下面是使用LSP的插件
+    -- ------------------------
 
 
     {
@@ -183,6 +188,93 @@ return {
                 desc = "LSP Definitions / references / ... (Trouble)",
             },
         },
-    }
+    },
+
+    { --这是一个语法高亮插件，使用lsp渲染
+        'nvim-treesitter/nvim-treesitter',
+        -- we should add the paser per language
+        -- to do it , we can use :TSInstall language_name
+        -- to know what language paser we have,we can use :TSInstallInfo
+        lazy = true,
+        config = function()
+            require 'nvim-treesitter.configs'.setup {
+                ensure_installed = { "markdown", "markdown_inline", "html" },
+                highlight = {
+                    enable = true,
+                    additional_vim_regex_highlighting = false,
+                },
+                indent = { enable = true },
+            }
+        end
+    },
+
+    { -- 面包屑插件，顶部显示当前所在lsp层次
+        "utilyre/barbecue.nvim",
+        name = "barbecue",
+        version = "*",
+        dependencies = {
+            "SmiteshP/nvim-navic",
+            "nvim-tree/nvim-web-devicons", -- optional dependency
+        },
+        opts = {
+            show_dirname = false,
+        },
+    },
+
+
+    -- { --垂直线插件
+    --     -- require the treesitter
+    --     -- The scope is not the current indentation level!
+    --     -- Instead, it is the indentation level where variables or functions are accessible
+    --     "lukas-reineke/indent-blankline.nvim",
+    --     event = "LspAttach",
+    --     config = function()
+    --         -- set mutiple indent colors
+    --         local highlight = {
+    --             "RainbowRed",
+    --             "RainbowYellow",
+    --             "RainbowBlue",
+    --             "RainbowOrange",
+    --             "RainbowGreen",
+    --             "RainbowViolet",
+    --             "RainbowCyan",
+    --         }
+    --         local hooks = require "ibl.hooks"
+    --         hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
+    --             vim.api.nvim_set_hl(0, "RainbowRed", { fg = "#E06C75" })
+    --             vim.api.nvim_set_hl(0, "RainbowYellow", { fg = "#E5C07B" })
+    --             vim.api.nvim_set_hl(0, "RainbowBlue", { fg = "#61AFEF" })
+    --             vim.api.nvim_set_hl(0, "RainbowOrange", { fg = "#D19A66" })
+    --             vim.api.nvim_set_hl(0, "RainbowGreen", { fg = "#98C379" })
+    --             vim.api.nvim_set_hl(0, "RainbowViolet", { fg = "#C678DD" })
+    --             vim.api.nvim_set_hl(0, "RainbowCyan", { fg = "#56B6C2" })
+    --         end)
+    --         -- 与rainbow-delimiters集成
+    --         vim.g.rainbow_delimiters = { highlight = highlight }
+    --         -- start the plugin
+    --         require("ibl").setup {
+    --             scope = { highlight = highlight },
+    --             exclude = {
+    --                 filetypes = {
+    --                     "help",
+    --                     "alpha",
+    --                     "dashboard",
+    --                     "neo-tree",
+    --                     "Trouble",
+    --                     "trouble",
+    --                     "lazy",
+    --                     "mason",
+    --                     "notify",
+    --                     "toggleterm",
+    --                     "lazyterm",
+    --                 }
+    --             }
+    --         }
+    --         hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
+    --     end
+    -- },
+
+
+
 
 }

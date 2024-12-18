@@ -1,13 +1,4 @@
 return {
-    { --资源库，包含了大量语言的可补全信息
-        "rafamadriz/friendly-snippets",
-        lazy = true,
-    },
-
-    { --小图标支持
-        'onsails/lspkind-nvim',
-        lazy = true,
-    },
 
     --nvim-cmp的本体
     {
@@ -15,9 +6,12 @@ return {
         lazy = true,
         event = "InsertEnter",
         dependencies = {
+            -- -- adds vscode-like pictograms(图标) to neovim built-in lsp
+            -- -- 不用了，自己上图标
+            -- { 'onsails/lspkind-nvim' },
+
             -- nvim-cmp的补全资源来源
             { "L3MON4D3/LuaSnip" },
-            { 'onsails/lspkind-nvim' },
             { "rafamadriz/friendly-snippets" },
             --luasnip和cmp之间的桥梁，没有不行呜呜呜我现在知道了
             { 'saadparwaiz1/cmp_luasnip' },
@@ -27,6 +21,16 @@ return {
             { 'hrsh7th/cmp-path' },
             { 'hrsh7th/cmp-cmdline' },
             { 'hrsh7th/cmp-nvim-lua' },
+            -- 数据库
+            {
+                "MattiasMTS/cmp-dbee",
+                dependencies = {
+                    { "kndndrj/nvim-dbee" }
+                },
+                ft = "sql", -- optional but good to have
+                opts = {},  -- needed
+            },
+
         },
 
         config = function()
@@ -42,6 +46,37 @@ return {
                     { "│", hl_name },
                 }
             end
+
+            local kind_icons = {
+                Text = "󰉿",
+                Method = "󰆧",
+                Function = "󰊕",
+                Constructor = "",
+                Field = "󰜢",
+                Variable = "󰀫",
+                Class = "󰠱",
+                Interface = "",
+                Module = "",
+                Property = "󰜢",
+                Unit = "󰑭",
+                Value = "󰎠",
+                Enum = "",
+                Keyword = "󰌋",
+                Snippet = "",
+                Color = "󰏘",
+                File = "󰈙",
+                Reference = "󰈇",
+                Folder = "󰉋",
+                EnumMember = "",
+                Constant = "󰏿",
+                Struct = "󰙅",
+                Event = "",
+                Operator = "󰆕",
+                TypeParameter = "",
+                -- 数据库
+                table = "",
+                keyword = "󰌋",
+            }
 
             -- insert `(` after select function or method item
             local cmp_autopairs = require('nvim-autopairs.completion.cmp')
@@ -62,40 +97,38 @@ return {
                     end
                 },
                 -- 补全信息的来源，按顺序优先
-                sources = cmp.config.sources({
+                sources = {
                     { name = 'nvim_lsp' },
                     { name = 'luasnip' },
-                }, {
                     { name = "nvim_lua" },
+                    { name = "cmp-dbee" },
                     { name = 'buffer' },
-                    { name = 'path' },
-                }),
-                formatting = {
-                    fields = { "kind", "abbr", "menu" },
-                    format = function(entry, vim_item)
-                        local kind = require("lspkind").cmp_format({ mode = "symbol_text", maxwidth = 50 })(entry,
-                            vim_item)
-                        local strings = vim.split(kind.kind, "%s", { trimempty = true })
-                        kind.kind = " " .. (strings[1] or "") .. " "
-                        kind.menu = "    (" .. (strings[2] or "") .. ")"
-
-                        return kind
-                    end,
-                    --将图标放在后面
-                    -- format = require('lspkind').cmp_format({
-                    --     with_text = true, -- do not show text alongside icons
-                    --     maxwidth = 50,    -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
-                    --     before = function(entry, vim_item)
-                    --
-                    --         -- 使用 lspkind 获取图标
-                    --         local kind_icon = vim_item.kind
-                    --         -- 将图标放在最前面，文字（补全类型）放在最后面
-                    --         vim_item.kind = kind_icon                                       -- 这个地方会是图标
-                    --
-                    --         return vim_item
-                    --     end
-                    -- })
                 },
+
+                -- 自定义补全菜单中每一项的显示格式
+                formatting = {
+
+                    -- 排序
+                    fields = { "kind", "abbr", "menu" },
+                    -- vim_item中包含排序中的值
+                    format = function(entry, vim_item)
+                        -- Source
+                        local menu = ({
+                            nvim_lsp = "LSP",
+                            luasnip = "SNIP",
+                            nvim_lua = "NVIM",
+                            ["cmp-dbee"] = "DBEE",
+                            buffer = "BUF",
+                            path = "PATH",
+                        })[entry.source.name] or "?"
+                        vim_item.menu = string.format('(%s.%s)', menu, vim_item.kind) -- This concatenates the icons with the name of the item kind
+                        -- Kind icons
+                        vim_item.kind = kind_icons[vim_item.kind] or '?'
+                        return vim_item
+                    end
+                },
+
+
                 window = {
                     completion = {
                         border = border "CmpBorder", -- 为补全窗口添加边框
@@ -148,7 +181,7 @@ return {
         "L3MON4D3/LuaSnip",
         dependencies = { "rafamadriz/friendly-snippets" },
         lazy = true,
-        version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
+        version = "v2.*",
         -- install jsregexp (optional!).
         build = "make install_jsregexp",
         config = function()
@@ -156,5 +189,18 @@ return {
             -- 加载 snippets
             require('luasnip.loaders.from_vscode').lazy_load()
         end
-    }
+    },
+
+    { --资源库，包含了大量语言的可补全信息
+        "rafamadriz/friendly-snippets",
+        lazy = true,
+    },
+
+
+    -- 现在是自己提供图标
+    -- { --小图标支持
+    --     'onsails/lspkind-nvim',
+    --     lazy = true,
+    -- },
+    --
 }

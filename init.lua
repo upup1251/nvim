@@ -25,24 +25,21 @@ require("lazy").setup("plugins", {
 --启动时候自动恢复上一次的sessions
 --路径保存在~/.local/state/nvim/sessions
 --vim.cmd([[lua require("persistence").load()]])
+
 --启动时自动加载上一次的view,关闭时自动保存当时的view
 --路径 保存在~/.local/state/nvim/view
-vim.api.nvim_create_autocmd({ "BufEnter" }, {
-    pattern = { "*" },
-    command = "silent! loadview",
-    nested = true,
+-- 自动加载视图
+-- 在buf写入和读取时候触发
+vim.api.nvim_create_autocmd("BufWinEnter", {
+  pattern = "*",
+  command = "silent! loadview",
 })
-vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost" }, {
-    pattern = "*",
-    callback = function()
-        -- 检查当前缓冲区是否有文件名
-        if vim.fn.bufname() ~= "" and vim.fn.getbufvar(0, "&modifiable") == 1 then
-            -- 保存视图
-            vim.cmd("silent! mkview")
-        end
-    end,
-    nested = true,
+-- 自动保存视图
+vim.api.nvim_create_autocmd("BufWinLeave", {
+  pattern = "*",
+  command = "silent! mkview",
 })
+
 -- vim.api.nvim_create_autocmd("BufWritePre", {
 --     group = group,
 --     buffer = bufnr,
@@ -88,6 +85,7 @@ vim.api.nvim_command([[
 ]])
 
 
+
 -- 打开 Dashboard
 -- 自从把<caps_lock>变成进入normal模式后，发现太容易误触了，还是算了哈哈哈哈哈，自己的配置就是好，想改就怎么改
 -- vim.api.nvim_set_keymap('n', '<ESC>', ':Dashboard<CR>', { noremap = true, silent = true })
@@ -95,6 +93,9 @@ vim.api.nvim_command([[
 vim.cmd([[
   autocmd FileType dashboard nnoremap <buffer> <ESC> :bd<CR>
 ]])
+
+
+
 
 vim.cmd [[
 sign define DiagnosticSignError text=  linehl= texthl=DiagnosticSignError numhl=
@@ -108,7 +109,7 @@ sign define DiagnosticSignHint text=💡  linehl= texthl=DiagnosticSignHint numh
 vim.api.nvim_create_autocmd("FileType", {
     pattern = "markdown",
     callback = function()
-        vim.keymap.set('n', 't', function()
+        vim.keymap.set('n', '<CR>', function()
             local line = vim.api.nvim_get_current_line()
             -- 检查当前行是否包含 "- [ ]"
             if line:find("%- %[ %]") then
@@ -127,8 +128,10 @@ vim.api.nvim_create_autocmd("FileType", {
     end,
 })
 
+
 -- Markdown 文件类型下自动切换输入法(异步的喔)
 -- 借助命令行工具im-self进行输入法的切换
+-- 虽然可行，但是我还是比较习惯于emmmm从英文切换到中文
 local md_china = false
 if md_china then
     vim.api.nvim_create_autocmd({ "FileType" }, {

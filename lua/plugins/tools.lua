@@ -1,5 +1,8 @@
 --tools.lua
 return {
+    -- NOTE: 目录树
+    -- -----------
+
     { --this is the dir tree tool
         "nvim-tree/nvim-tree.lua",
         version = "*",
@@ -58,25 +61,8 @@ return {
         end,
     },
 
-    {
-        "folke/flash.nvim",
-        event = "VeryLazy",
-        opts = {
-            modes = {
-                --关闭f、t的增强
-                char = { enabled = false }
-            }
-
-        },
-        -- stylua: ignore
-        keys = {
-            { "S", mode = { "n", "x", "o" }, function() require("flash").jump() end,   desc = "Flash" },
-            --{ "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
-            { "r", mode = "o",               function() require("flash").remote() end, desc = "Remote Flash" },
-            -- { "R",     mode = { "o", "x" },      function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
-            -- { "<c-s>", mode = { "c" },           function() require("flash").toggle() end,            desc = "Toggle Flash Search" },
-        },
-    },
+    -- NOTE: 模糊查找
+    -- -------------
 
     { -- file find tool
         'nvim-telescope/telescope.nvim',
@@ -191,6 +177,7 @@ return {
     },
 
 
+    -- NOTE: SESSION自动保存插件
 
 
     { --这是自动保存、手动加载sessions的插件
@@ -207,19 +194,22 @@ return {
         },
     },
 
-    {                  --the surroud add/change/del tools
-        "kylechui/nvim-surround",
-        version = "*", -- Use for stability; omit to use `main` branch for the latest features
-        event = "LspAttach",
-        config = function()
-            require("nvim-surround").setup({
-            })
-        end
+    -- NOTE: 包围符操作
+
+    { --the surroud add/change/del tools
         --use:
         --add:ys{motion}{char}
         --delete:ds{char}
         --change:cs{tarfet}{repalcement}
+        "kylechui/nvim-surround",
+        version = "*", -- Use for stability; omit to use `main` branch for the latest features
+        event = "LspAttach",
+        config = function()
+            require("nvim-surround").setup({})
+        end
     },
+
+    -- NOTE: 注释指令
 
     { --the is a comment helper
         'numToStr/Comment.nvim',
@@ -240,20 +230,41 @@ return {
         -- `gb[count]{motion}` - (Op-pending) Toggles the region using blockwise comment
     },
 
-    { --for : todo/note/fix/warning/perf/hack
+    { --for :
+        -- TODO(待做事项)
+        --  NOTE(备注)
+        --  FIX(标记需要修复的问题)
+        --  WARNING(提供警告)
+        --  PERF(需要性能优化)
+        --  hack(代码中临时解决方案)
+        --
         -- usage: write `:TODO: xxxx` then take a gcc
         "folke/todo-comments.nvim",
         event = "VeryLazy",
         dependencies = { "nvim-lua/plenary.nvim" },
         opts = {
-            -- your configuration comes here
-            -- or leave it empty to use the default settings
-            -- refer to the configuration section below
         }
     },
 
 
-
+    -- { --快速移动插件，我感觉我不用，基本操作就行
+    --     "folke/flash.nvim",
+    --     event = "VeryLazy",
+    --     opts = {
+    --         modes = {
+    --             --关闭f、t的增强
+    --             char = { enabled = false }
+    --         }
+    --     },
+    --     -- stylua: ignore
+    --     keys = {
+    --         { "S", mode = { "n", "x", "o" }, function() require("flash").jump() end,   desc = "Flash" },
+    --         --{ "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+    --         { "r", mode = "o",               function() require("flash").remote() end, desc = "Remote Flash" },
+    --         -- { "R",     mode = { "o", "x" },      function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+    --         -- { "<c-s>", mode = { "c" },           function() require("flash").toggle() end,            desc = "Toggle Flash Search" },
+    --     },
+    -- },
 }
 
 
